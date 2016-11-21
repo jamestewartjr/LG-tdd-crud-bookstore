@@ -58,10 +58,10 @@ const createBook = book => {
   })
 }
 
-const showBooks = books => {
-  return db.query( 'SELECT * FROM books', [ bookId, genreId]).then( result => result[0].id)
-}
-}
+// const showBooks = books => {
+//   return db.query( 'SELECT * FROM books', [ bookId, genreId]).then( result => result[0].id)
+// }
+
 
 module.exports = {
   resetDB,
