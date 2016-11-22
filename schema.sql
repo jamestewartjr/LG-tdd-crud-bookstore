@@ -19,12 +19,12 @@ CREATE TABLE genres (
 
 DROP TABLE IF EXISTS book_authors;
 CREATE TABLE book_authors (
-  bookId INTEGER,
-  authorId INTEGER 
+  book_id INTEGER,
+  author_id INTEGER
 );
 
 DROP TABLE IF EXISTS book_genres;
 CREATE TABLE book_genres (
-  bookId INTEGER,
-  genreId INTEGER
-)
+  book_id INTEGER,
+  genre_id INTEGER
+);
