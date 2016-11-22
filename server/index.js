@@ -31,25 +31,34 @@ server.post('/api/books', (request, response) => {
 })
 
 server.get('/api/books', (request, response, next) => {
-  const { query } = request
+  let {query}  = request
   let page = query.page || 1
-  const size = query.size || 10
+  let size = query.size || 10
+
+  console.log("page", page)
+  console.log("size", size)
+  console.log("query", query)
+  console.log("search query", query.search_query)
 
   if( query.search_query === undefined ) {
     database.showBooks(page).then( (books, page) => {
       response.status(200).json(books)
     })
   } else {
-    database.search.forBooks({ page, size, search_query: query.search_query })
-      .then( books => response.json( { books, page, size }) )
+    database.search.forBooks({ page, size, search_query: query})
+      .then( books => response.json( { books, page, size, search_query }) )
   }
 })
 
 
-//
-// server.get('/api/authors', (request, response) => {
-//   response.status(200).json(authors)
-// })
+
+server.get('/api/authors', (request, response) => {
+  let {query} = request
+  let page = 1
+  database.getAuthors(page).then( (authors, page) => {
+      response.status(200).json({authors, page})
+  })
+})
 //
 // server.get('/api/genres', (request, response) => {
 //   response.status(200).json()

@@ -57,7 +57,8 @@ const createBook = book => {
 }
 
 const showBooks = (page = 1) => {
-  const offset = (page - 1) * 10
+  const offset =  (page - 1) * 10
+
   return db.query( `
     SELECT books.id,
       books.title,
@@ -95,6 +96,7 @@ const search = {
      WHERE LOWER(books.title) LIKE $${variables.length}
      OR LOWER(authors.name) LIKE $${variables.length}
      OR LOWER(genres.title) LIKE $${variables.length}
+     OR LOWER(books.year) LIKE $${variables.length}
      ORDER BY books.id ASC
      `
    }
@@ -104,7 +106,7 @@ const search = {
      let offset = (parseInt(options.page) - 1) * PAGE_SIZE
      variables.push(offset)
      sql += `
-     LIMIT ${PAGE_SIZE}
+     LIMIT $${PAGE_SIZE}
      OFFSET $${variables.length}
      `
    }
@@ -113,9 +115,36 @@ const search = {
  }
 }
 
+const getAuthors = (page = 1) => {
+  const offset = (page - 1) * 10
+  return db.query( `
+    SELECT DISTINCT(authors.*) FROM authors LIMIT 10 offset $1
+  `, [offset])
+}
+
+// const showBooks = (page = 1) => {
+//
+//   return db.query( `
+//     SELECT books.id,
+//       books.title,
+//       books.year,
+//       authors.name as author,
+//       json_agg(genres.name order by genres.name asc) as genres
+//     FROM books
+//       join book_genres on books.id = book_genres.book_id
+//       join genres on book_genres.genre_id = genres.id
+//       join book_authors on books.id = book_authors.book_id
+//       join authors on book_authors.author_id = authors.id
+//     group by books.id, title, year, author
+//     LIMIT $1 offset $2
+//   `, [limit, soffset])
+// }
+
 module.exports = {
   resetDb,
   createBook,
   showBooks,
-  search
+  search,
+  getAuthors
+
 }
