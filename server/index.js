@@ -45,7 +45,7 @@ server.get('/api/books', (request, response, next) => {
       response.status(200).json(books)
     })
   } else {
-    database.search.forBooks({ page, size, search_query: query})
+    database.search.forBooks({ page, size, search_query: query.search_query })
       .then( books => response.json( { books, page, size, search_query }) )
   }
 })
@@ -53,9 +53,8 @@ server.get('/api/books', (request, response, next) => {
 
 
 server.get('/api/authors', (request, response) => {
-  let {query} = request
   let page = 1
-  database.getAuthors(page).then( (authors, page) => {
+  database.getAuthors(page).then( (authors) => {
       response.status(200).json({authors, page})
   })
 })

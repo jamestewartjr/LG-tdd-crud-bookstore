@@ -116,7 +116,7 @@ const search = {
 }
 
 const getAuthors = (page = 1) => {
-  const offset = (page - 1) * 10
+  let offset = (page - 1) * 10
   return db.query( `
     SELECT DISTINCT(authors.*) FROM authors LIMIT 10 offset $1
   `, [offset])
